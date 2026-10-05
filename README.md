@@ -1,2 +1,3 @@
-# arduino-uno-uart-sample
-UART sample for arduino uno r3(ATmega328p)
+```
+make upload && tio /dev/ttyUSB0 -b 9600
+```
