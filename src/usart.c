@@ -1,6 +1,6 @@
-#define F_CPU 8000000UL // 8 MHz Clock Speed
-#define BAUD 9600
-#define UBRRN ((F_CPU / (BAUD * 8UL)) - 1)
+#define F_CPU 16000000UL // 8 MHz Clock Speed
+#define BAUD 9600UL
+#define UBRRN ((F_CPU / (BAUD * 16UL)) - 1)
 
 #include <avr/io.h>
 #include <util/delay.h>
