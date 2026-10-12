@@ -1,6 +1,6 @@
-#define F_CPU 16000000UL // 8 MHz Clock Speed
-#define BAUD 9600UL
-#define UBRRN ((F_CPU / (BAUD * 16UL)) - 1)
+#define F_CPU 16000000UL // 16 MHz Clock Speed
+#define BAUD 115200UL
+#define UBRRN ((F_CPU / (BAUD * 8UL)) - 1)
 
 #include <avr/io.h>
 #include <util/delay.h>
@@ -8,6 +8,9 @@
 #include <stdlib.h>
 
 void uart_init(unsigned int ubrr) {
+    // set double uart tx speed
+    UCSR0A = (1 << U2X0);
+
     // set baud rate register
     UBRR0H = (unsigned char)(ubrr >> 8);
     UBRR0L = (unsigned char)ubrr;
