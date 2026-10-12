@@ -1,11 +1,4 @@
-#define F_CPU 16000000UL // 16 MHz Clock Speed
-#define BAUD 115200UL
-#define UBRRN ((F_CPU / (BAUD * 8UL)) - 1)
-
 #include <avr/io.h>
-#include <util/delay.h>
-
-#include <stdlib.h>
 
 void uart_init(unsigned int ubrr) {
     // set double uart tx speed
@@ -22,7 +15,7 @@ void uart_init(unsigned int ubrr) {
     UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
 }
 
-void uart_transmit(char data) {
+static void uart_transmit(char data) {
     // Wait for empty transmit buffer
     while (!(UCSR0A & (1 << UDRE0)));
     // Put data into buffer and then sends the data
@@ -33,30 +26,4 @@ void uart_print(const char* str) {
     while (*str) {
         uart_transmit(*str++);
     }
-}
-
-int main(void) {
-    char buf[8];
-
-    uart_init(UBRRN);
-
-    while (1) {
-        // send the message
-        uart_print("Hello from ATmega328P\r\n");
-
-        for (int i = 1; i <= 10; i++) {
-            itoa(i, buf, 10);
-            uart_print("Counter: ");
-            uart_print(buf);
-            uart_print("\r\n");
-        }
-
-        // Wait 1 second
-        _delay_ms(1000);
-
-        // Clear screen
-        uart_print("\x1B[2J\x1B[H");
-    }
-
-    return 0;
 }

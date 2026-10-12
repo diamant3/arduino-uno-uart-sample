@@ -5,10 +5,10 @@ PORT = /dev/ttyUSB0
 
 CC = avr-gcc
 OBJCOPY = avr-objcopy
-CFLAGS = -mmcu=$(MCU) -DF_CPU=$(F_CPU) -Os -Wall -Wextra
+CFLAGS = -mmcu=$(MCU) -DF_CPU=$(F_CPU) -Iinclude -Os -Wall -Wextra
 TARGET = usart
 
-SRC_DIR = src
+SRC_DIR = $(wildcard src/*.c)
 OUT_DIR = out
 
 all: $(OUT_DIR)/$(TARGET).hex
@@ -16,9 +16,9 @@ all: $(OUT_DIR)/$(TARGET).hex
 $(OUT_DIR):
 	mkdir -p $(OUT_DIR)
 
-$(OUT_DIR)/$(TARGET).elf: $(SRC_DIR)/$(TARGET).c
+$(OUT_DIR)/$(TARGET).elf: $(SRC_DIR)
 	mkdir -p $(OUT_DIR)
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -o $@ $^
 
 $(OUT_DIR)/$(TARGET).hex: $(OUT_DIR)/$(TARGET).elf
 	$(OBJCOPY) -j .text -j .data -O ihex $< $@
